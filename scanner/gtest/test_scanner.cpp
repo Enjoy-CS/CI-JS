@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 
-import Hello;
-
-class TestThread : public ::testing::Test {
+class TestScanner : public ::testing::Test {
 protected:
     void SetUp() override {
         // Code here will be called immediately after the constructor (right
@@ -15,6 +13,6 @@ protected:
     }
 };
 
-TEST_F(TestThread, test1) {
+TEST_F(TestScanner, defaultTest) {
    
 }
