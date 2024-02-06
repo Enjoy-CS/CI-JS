@@ -62,8 +62,8 @@ enum class TokenType {
 class Token {
 public:
     Token(TokenType type, std::string lexeme, LiteralOptional literal, uint16_t line);
-    Token(TokenType type, const char *lexeme, LiteralOptional literal, uint16_t line);
-    Token(TokenType type, const char *lexeme);
+    Token(TokenType type, std::string_view lexeme, LiteralOptional literal, uint16_t line);
+    Token(TokenType type, std::string_view lexeme);
 
     auto toString() const -> std::string;
     auto getType() const -> TokenType;
@@ -75,8 +75,8 @@ public:
 private:
     const TokenType type_;
     const std::string lexeme_;
-    LiteralOptional literal_ = std::nullopt;
-    const int line_ = -1;
+    LiteralOptional literal_ {std::nullopt};
+    const int line_ {-1};
 };
 
 }

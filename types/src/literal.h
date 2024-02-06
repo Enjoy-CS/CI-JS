@@ -12,7 +12,7 @@ using LiteralOptional = std::optional<Literal>;
 
 auto getLiteralString(const Literal &value) -> std::string;
 auto createOptionalLiteral(double d_val) -> LiteralOptional;
-auto createOptionalLiteral(const std::string &lexeme) -> LiteralOptional;
+auto createOptionalLiteral(const std::string& lexeme) -> LiteralOptional;
 
 }
 #endif // __LITERAL_H__

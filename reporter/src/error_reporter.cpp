@@ -16,7 +16,7 @@ void ErrReporter::print() {
 }
 
 auto ErrReporter::getStatus() const -> LoxStatus { return status; }
-void ErrReporter::setErrStatus(uint32_t line_number, const std::string &err_message) {
+void ErrReporter::setErrStatus(uint32_t line_number, const std::string& err_message) {
     err_storage.emplace_back("Line Number: " + std::to_string(line_number) \
     + ", Error: " + err_message);
     status = LoxStatus::ERROR;

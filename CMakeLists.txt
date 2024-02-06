@@ -54,6 +54,8 @@ FetchContent_Declare(backward
         GIT_TAG v1.6)
 FetchContent_MakeAvailable(backward)
 
+add_definitions(-DLOX_DEBUG_MODE)
+
 # Set compiler flags
 add_compile_options(-W -Wall)
 

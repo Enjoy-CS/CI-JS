@@ -2,7 +2,7 @@
 #include "literal.h"
 
 #include <map>
-#include <type_traits>
+// #include <type_traits>
 #include <utility>
 
 namespace lox::types {
@@ -59,10 +59,10 @@ static auto tokenTypeToStr(const TokenType &value) -> std::string {
 Token::Token(TokenType type, std::string lexeme, LiteralOptional literal, uint16_t line)
 : type_(type), lexeme_(std::move(lexeme)), literal_(std::move(literal)), line_(line) {}
 
-Token::Token(TokenType type, const char *lexeme, LiteralOptional literal, uint16_t line)
+Token::Token(TokenType type, std::string_view lexeme, LiteralOptional literal, uint16_t line)
 : type_(type), lexeme_(lexeme), literal_(std::move(literal)), line_(line) {}
 
-Token::Token(TokenType type, const char *lexeme)
+Token::Token(TokenType type, std::string_view lexeme)
 : type_(type), lexeme_(lexeme) {}
 
 auto Token::toString() const -> std::string {

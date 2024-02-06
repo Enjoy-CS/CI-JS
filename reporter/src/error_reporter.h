@@ -16,11 +16,11 @@ public:
     void clean();
     void print();
     auto getStatus() const -> LoxStatus;
-    void setErrStatus(uint32_t line_number, const std::string &err_message);
+    void setErrStatus(uint32_t line_number, const std::string& err_message);
 
 private:
     std::vector<std::string> err_storage;
-    LoxStatus status = LoxStatus::OK;
+    LoxStatus status {LoxStatus::OK};
 };
 
 }

@@ -13,6 +13,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 )
 target_include_directories(${PROJECT_NAME} PUBLIC 
     src
+    ${CMAKE_SOURCE_DIR}/reporter/src
+    ${CMAKE_SOURCE_DIR}/types/src
 )
 
 # For testing
