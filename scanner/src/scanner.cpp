@@ -98,6 +98,99 @@ void Scanner::consumeNumber() {
     }
 }
 
-//TODO consumeString 구현해야 함.
+void Scanner::consumeString() {
+    while (!isAtEnd() && peek() != '"') {
+        if (peek() == '\n') ++line_;
+        advance();
+    }
+
+    if (isAtEnd()) {
+        reporter_.setErrStatus(line_, "Unterminated String");
+    } else {
+        advance(); // consume the closing quote '"'
+    }
+}
+
+auto Scanner::isAtEnd() const -> bool { return current_ >= source_.size(); }
+auto Scanner::matchNext(char expected) -> bool {
+    bool next_matches = (peek() == expected);
+    if (next_matches) advance();
+    return next_matches;
+}
+
+auto Scanner::peek() -> char {
+    if (isAtEnd()) return '\0';
+    return source_[current_];
+}
+
+auto Scanner::peekNext() -> char {
+    if ((current_ + 1) >= source_.size()) return '\0';
+    return source_[current_ + 1];
+}
+
+void Scanner::tokenizeOne() {
+    char c = peek();
+    advance();
+    switch(c) {
+        case '(': addToken(TokenType::LEFT_PAREN); break;
+        case ')': addToken(TokenType::RIGHT_PAREN); break;
+        case '{': addToken(TokenType::LEFT_BRACE); break;
+        case '}': addToken(TokenType::RIGHT_BRACE); break;
+        case ',': addToken(TokenType::COMMA); break;
+        case ':': addToken(TokenType::COLON); break;
+        case '.': addToken(TokenType::DOT); break;
+        case '?': addToken(TokenType::QUESTION); break;
+        case ';': addToken(TokenType::SEMICOLON); break;
+        case '*': addToken(TokenType::STAR); break;
+        case '!':
+            addToken(matchNext('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
+            break;
+        case '=':
+            addToken(matchNext('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
+            break;
+        case '>':
+            addToken(matchNext('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
+            break;
+        case '<':
+            addToken(matchNext('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+            break;
+        case '-':
+            addToken(matchNext('-') ? TokenType::MINUS_MINUS : TokenType::MINUS);
+            break;
+        case '+':
+            addToken(matchNext('+') ? TokenType::PLUS_PLUS : TokenType::PLUS);
+            break;
+        case '/':
+            if (matchNext('/'))
+                skipComment();
+            else if (matchNext('*'))
+                skipBlockComment();
+            else
+                addToken(TokenType::SLASH);
+            break;
+        case ' ':
+        case '\t':
+        case '\r': break;  // whitespace
+        case '\n': ++line_; break;
+        case '"':
+            consumeString();
+            addToken(TokenType::STRING);
+            break;
+        default:
+            if (isDigit(c)) {
+                consumeNumber();
+                addToken(TokenType::NUMBER);
+            } else if (isAlpha(c)) {
+                consumeIdentifier();
+                const std::string identifier {getLexeme(source_, start_, current_ - start_)};
+                addToken(findIdentifier(identifier));
+            } else {
+                std::string message = "Unexpected character: ";
+                message.append(1, static_cast<char>(c));
+                reporter_.setErrStatus(line_, message);
+            }
+            break;
+    }
+}
 
 } // lox namespace
